@@ -1,12 +1,13 @@
 import './App.css';
 import LeftPanel from './components/LeftPanel';
+import ChatPanel from './components/ChatPanel';
 import { useState } from 'react';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <>
+    <div className="app-layout">
       {isSidebarOpen ? (
         <LeftPanel onCollapse={() => setIsSidebarOpen(false)} />
       ) : (
@@ -14,7 +15,9 @@ function App() {
           <i className="fa-solid fa-angles-right"></i>
         </button>
       )}
-    </>
+
+      <ChatPanel />
+    </div>
   );
 }
 
