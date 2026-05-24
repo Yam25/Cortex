@@ -106,16 +106,22 @@
 .profile-footer {
   margin-top: auto;
 
-  padding: 0.9rem;
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+
+  padding: 1rem 1.25rem;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid var(--border);
+}
+
+.profile-left {
+  display: flex;
+  align-items: center;
   gap: 0.8rem;
-
-  border-radius: var(--radius);
-
-  background: var(--surface-2);
-  border: 1px solid var(--border);
 }
 
 .profile-avatar {
@@ -142,16 +148,13 @@
 
 .profile-name {
   margin: 0;
-
   font-size: 0.95rem;
   font-weight: 500;
-
   color: var(--text-h);
 }
 
 .profile-subtitle {
   margin: 0.15rem 0 0;
-
   font-size: 0.8rem;
   color: var(--text-muted);
 }

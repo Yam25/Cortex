@@ -24,10 +24,13 @@ function LeftPanel({ onCollapse }) {
       </button>
 
       <div className="profile-footer">
-        <div className="profile-avatar">Y</div>
-        <div className="profile-text">
-          <p className="profile-name">Yamini</p>
-          <p className="profile-subtitle">Your memory workspace</p>
+        <div className="profile-left">
+          <div className="profile-avatar">Y</div>
+
+          <div className="profile-text">
+            <p className="profile-name">Yamini</p>
+            <p className="profile-subtitle">Your memory workspace</p>
+          </div>
         </div>
       </div>
     </div>
