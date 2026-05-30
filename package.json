@@ -1,0 +1,22 @@
+{
+  "name": "cortex",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend",
+    "preview": "npm run preview -w frontend",
+    "lint": "npm run lint -w frontend",
+    "format": "npm run format -w frontend",
+    "format:check": "npm run format:check -w frontend",
+    "check": "npm run check:frontend && npm run check:backend",
+    "check:frontend": "npm run lint -w frontend && npm run format:check -w frontend",
+    "check:backend": "node scripts/check-backend.mjs"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

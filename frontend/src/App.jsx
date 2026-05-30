@@ -8,15 +8,12 @@ function App() {
 
   return (
     <div className="app-layout">
-      {isSidebarOpen ? (
-        <LeftPanel onCollapse={() => setIsSidebarOpen(false)} />
-      ) : (
-        <button className="sidebar-open-btn" onClick={() => setIsSidebarOpen(true)}>
-          <i className="fa-solid fa-angles-right"></i>
-        </button>
-      )}
+      {isSidebarOpen && <LeftPanel onCollapse={() => setIsSidebarOpen(false)} />}
 
-      <ChatPanel />
+      <ChatPanel
+        isSidebarOpen={isSidebarOpen}
+        onOpenSidebar={() => setIsSidebarOpen(true)}
+      />
     </div>
   );
 }

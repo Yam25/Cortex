@@ -68,10 +68,6 @@ npm run build
 ```text
 src/
 ├── components/
-├── layouts/
-├── pages/
-├── mock/
-├── styles/
 └── App.jsx
 ```
 

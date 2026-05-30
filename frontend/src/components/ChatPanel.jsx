@@ -1,7 +1,7 @@
 import './ChatPanel.css';
 import { useState } from 'react';
 
-function ChatPanel() {
+function ChatPanel({ isSidebarOpen, onOpenSidebar }) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
@@ -35,6 +35,16 @@ function ChatPanel() {
     <div className="chat-panel">
       <div className="chat-shell">
         <div className="chat-header">
+          {!isSidebarOpen && (
+            <button
+              type="button"
+              className="chat-sidebar-open"
+              onClick={onOpenSidebar}
+              aria-label="Open sidebar"
+            >
+              <i className="fa-solid fa-angles-right"></i>
+            </button>
+          )}
           <h2 className="chat-title">New Chat</h2>
         </div>
 
