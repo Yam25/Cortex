@@ -10,10 +10,7 @@ function App() {
     <div className="app-layout">
       {isSidebarOpen && <LeftPanel onCollapse={() => setIsSidebarOpen(false)} />}
 
-      <ChatPanel
-        isSidebarOpen={isSidebarOpen}
-        onOpenSidebar={() => setIsSidebarOpen(true)}
-      />
+      <ChatPanel isSidebarOpen={isSidebarOpen} onOpenSidebar={() => setIsSidebarOpen(true)} />
     </div>
   );
 }
