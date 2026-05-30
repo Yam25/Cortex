@@ -1,6 +1,6 @@
 import './LeftPanel.css';
 
-function LeftPanel({ onCollapse }) {
+function LeftPanel({ onCollapse, onNewChat }) {
   return (
     <div className="left-panel">
       <div className="left-header">
@@ -18,7 +18,7 @@ function LeftPanel({ onCollapse }) {
         </span>
       </div>
 
-      <button className="new-chat-btn">
+      <button type="button" className="new-chat-btn" onClick={onNewChat}>
         <i className="fa-solid fa-pen-to-square"></i>
         <span>New Chat</span>
       </button>

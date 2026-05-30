@@ -1,0 +1,140 @@
+export const meta = {
+  title: 'ChatPanel',
+  component: 'ChatPanel',
+  path: 'src/components/ChatPanel.jsx',
+};
+
+# ChatPanel
+
+The center chat surface: header, message area (welcome or thread), typing indicator, and input with send.
+
+**Source:** `src/components/ChatPanel.jsx`  
+**Styles:** `src/components/ChatPanel.css`
+
+---
+
+## Role in the app
+
+`ChatPanel` is the main conversation UI. In Phase 1 all message state is **local** inside this component. `App` controls **which session instance** is shown via `key` remount and passes `conversationId` for future API wiring.
+
+```text
+App
+ ├── activeConversationId  (null | string)
+ ├── draftInstanceId       (UUID for unsaved drafts)
+ ├── chatPanelKey          activeConversationId ?? draftInstanceId
+ └── ChatPanel key={chatPanelKey} conversationId={activeConversationId}
+```
+
+---
+
+## Props
+
+| Prop             | Type             | Required          | Description                                           |
+| ---------------- | ---------------- | ----------------- | ----------------------------------------------------- |
+| `isSidebarOpen`  | `boolean`        | Yes               | When false, header shows control to reopen sidebar    |
+| `onOpenSidebar`  | `() => void`     | Yes               | Sets `isSidebarOpen` to true in `App`                 |
+| `conversationId` | `string \| null` | Passed from `App` | `null` = new draft; future: load messages for this id |
+
+`conversationId` is passed today for API-ready coordination; fetch logic will live here (or in a hook) in a later phase.
+
+### Example (from `App.jsx`)
+
+```jsx
+<ChatPanel
+  key={chatPanelKey}
+  conversationId={activeConversationId}
+  isSidebarOpen={isSidebarOpen}
+  onOpenSidebar={() => setIsSidebarOpen(true)}
+/>
+```
+
+---
+
+## Local state (Phase 1)
+
+| State        | Type                 | Purpose                                |
+| ------------ | -------------------- | -------------------------------------- |
+| `input`      | `string`             | Controlled text field                  |
+| `messages`   | `{ sender, text }[]` | Thread content (`user` \| `bot`)       |
+| `isThinking` | `boolean`            | Mock typing indicator before bot reply |
+
+Remounting via `key={chatPanelKey}` resets all of the above when **New Chat** is clicked in the sidebar.
+
+---
+
+## UI states
+
+### Empty / welcome
+
+Shown when `messages.length === 0` and `!isThinking`:
+
+- Placeholder: “Welcome to Cortex”
+- Subcopy: “Ask anything or add to your memory.”
+
+### Active thread
+
+- User rows: avatar + bubble (`message-row user`)
+- Bot rows: logo + bubble (`message-row bot`)
+- Typing row: three-dot indicator while `isThinking`
+
+### Header
+
+- Title: “New Chat” (static in Phase 1)
+- Sidebar reopen button when `!isSidebarOpen`
+
+---
+
+## Send flow (mock)
+
+1. User submits non-empty `input` (Enter or send button).
+2. Append user message; clear input; set `isThinking` true.
+3. After 1s timeout, append mock bot message and clear thinking state.
+
+No network calls in Phase 1.
+
+---
+
+## Session reset (New Chat)
+
+Handled upstream in `App`, not inside `ChatPanel`:
+
+```js
+const handleNewChat = () => {
+  setActiveConversationId(null);
+  setDraftInstanceId(createDraftInstanceId());
+};
+```
+
+`chatPanelKey = activeConversationId ?? draftInstanceId` ensures React remounts the panel even when the conversation id stays `null`.
+
+---
+
+## Phase 1 vs future backend
+
+| Today                             | With API                                                        |
+| --------------------------------- | --------------------------------------------------------------- |
+| Messages in `useState`            | `GET /conversations/:id/messages` when `conversationId` changes |
+| Mock `setTimeout` bot reply       | Stream or `POST` + assistant response                           |
+| Header title fixed                | Title from conversation metadata                                |
+| No abort on New Chat during think | Cancel in-flight requests / timers                              |
+
+Suggested hook shape:
+
+```js
+// future
+useConversation(conversationId); // → { messages, send, isLoading, error }
+```
+
+---
+
+## Accessibility
+
+- Sidebar reopen: `aria-label="Open sidebar"`
+- Send control: icon button (consider `aria-label` when wiring real send)
+
+---
+
+## Related docs
+
+- [Sidebar (LeftPanel)](./Sidebar.mdx) — **New Chat** and collapse
+- `src/App.jsx` — `activeConversationId`, `draftInstanceId`, layout

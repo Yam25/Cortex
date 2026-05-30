@@ -1,0 +1,99 @@
+export const meta = {
+  title: 'Sidebar (LeftPanel)',
+  component: 'LeftPanel',
+  path: 'src/components/LeftPanel.jsx',
+};
+
+# Sidebar (`LeftPanel`)
+
+The left sidebar is the primary navigation shell for Cortex. It holds branding, layout controls, starting a new conversation, and the user profile footer.
+
+**Source:** `src/components/LeftPanel.jsx`  
+**Styles:** `src/components/LeftPanel.css`
+
+---
+
+## Role in the app
+
+`App.jsx` renders the sidebar only when it is open. The center **ChatPanel** can reopen the sidebar after collapse via its header control.
+
+```text
+App
+ ├── LeftPanel (sidebar)     ← this document
+ └── ChatPanel (center)
+```
+
+Session coordination (which chat is active, clearing the center on **New Chat**) lives in **`App`**, not in the sidebar. The sidebar emits events; it does not own message history.
+
+---
+
+## UI sections
+
+| Section            | Purpose                                                 |
+| ------------------ | ------------------------------------------------------- |
+| **Header**         | Cortex logo, title, tagline, collapse control           |
+| **New Chat**       | Starts a fresh unsaved conversation in the center panel |
+| **Profile footer** | Static user identity (Phase 1 placeholder)              |
+
+---
+
+## Props
+
+| Prop         | Type         | Required | Description                                                  |
+| ------------ | ------------ | -------- | ------------------------------------------------------------ |
+| `onCollapse` | `() => void` | Yes      | Hides the sidebar; `App` sets `isSidebarOpen` to `false`     |
+| `onNewChat`  | `() => void` | Yes      | Resets active conversation in `App` and remounts `ChatPanel` |
+
+### Example (from `App.jsx`)
+
+```jsx
+<LeftPanel onCollapse={() => setIsSidebarOpen(false)} onNewChat={handleNewChat} />
+```
+
+---
+
+## Interactions
+
+### Collapse
+
+- Control: chevron in the header (`left-collapse`)
+- Effect: sidebar unmounts; chat header shows **Open sidebar** when `isSidebarOpen` is false
+
+### New Chat
+
+- Control: `new-chat-btn`
+- Effect in `App`:
+  - `activeConversationId` → `null` (unsaved draft)
+  - `draftInstanceId` → new `crypto.randomUUID()` (forces center remount)
+- Effect in UI: center returns to welcome placeholder with empty messages and input
+
+---
+
+## Phase 1 vs future backend
+
+| Today (Phase 1)                      | With API history                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------- |
+| No conversation list in sidebar      | `GET /conversations` populates a scrollable list                                    |
+| **New Chat** only clears local draft | **New Chat** sets `activeConversationId` to `null` or creates `POST /conversations` |
+| Static profile footer                | Profile/settings from auth or user API                                              |
+
+Planned sidebar additions:
+
+- Conversation rows (title, last updated)
+- `onSelectConversation(id)` to set `activeConversationId` in `App`
+- Loading and empty states for the list
+
+---
+
+## Styling notes
+
+- Width uses `--sidebar-width` from `index.css`
+- **New Chat** uses accent tokens (`--accent`, `--accent-hover`)
+- Footer is pinned with `margin-top: auto` on the flex column
+
+---
+
+## Related docs
+
+- [ChatPanel](./ChatPanel.mdx) — center chat view
+- `src/App.jsx` — sidebar visibility and session state

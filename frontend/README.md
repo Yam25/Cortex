@@ -1,55 +1,56 @@
-# Cortex Frontend 🧠
+# Cortex Frontend
 
-Frontend for **Cortex** — a personal second brain built for software engineers.
-
-This UI is focused on creating a clean developer-first workspace for:
-- chatting with saved knowledge
-- retrieving past decisions
-- exploring related memories
-- building long-term searchable context
+Frontend for **Cortex** — a personal second brain for software engineers.
 
 ---
 
-## Tech Stack
+## Phase 1 (current)
 
-- React
-- Vite
-- JavaScript
+Phase 1 is a **UI shell** with local-only behavior. No backend or API yet.
 
----
+### Repo and tooling
 
-## Phase 1 Goals
+- React + Vite app in this workspace
+- **ESLint** and **Prettier** (`lint`, `format`, `format:check` scripts)
+- Root monorepo uses **npm workspaces**; **Husky** runs `npm run check` on commit (frontend lint/format + backend placeholder check)
 
-Build the UI shell with hardcoded data:
-
-- **Left Sidebar**
-  - Chat history
-  - Memory categories
-  - Resources
-
-- **Center Chat**
-  - Conversation view
-  - Retrieved memory cards
-  - Save prompts
-
-- **Right Context Panel**
-  - Retrieved memories
-  - Related memories
-  - Tags
-
-No backend/API integration in this phase.
-
----
-
-## Run locally
-
-Install dependencies:
+Install from the **repo root** (`Cortex/`), not only this folder:
 
 ```bash
 npm install
 ```
 
-Start dev server:
+### Layout
+
+
+| Area             | What’s there                                                                             |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| **Left sidebar** | Cortex branding, collapse control, **New Chat** button, profile footer (static)          |
+| **Center chat**  | Header (“New Chat”), welcome placeholder, message list with mock bot reply, input + send |
+
+
+Sidebar can be collapsed and reopened from the chat header.
+
+---
+
+## Tech stack
+
+- React 19
+- Vite
+- JavaScript
+- Font Awesome (icons via CDN in `index.html`)
+
+---
+
+## Run locally
+
+From repo root:
+
+```bash
+npm run dev
+```
+
+Or from this folder after root install:
 
 ```bash
 npm run dev
@@ -61,18 +62,61 @@ Build:
 npm run build
 ```
 
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## Lint and format
+
+From repo root:
+
+```bash
+npm run lint
+npm run format
+npm run format:check
+npm run check
+```
+
+From this folder (same scripts, local workspace):
+
+```bash
+npm run lint
+npm run format
+npm run format:check
+```
+
 ---
 
 ## Project structure
 
 ```text
 src/
-├── components/
-└── App.jsx
+├── App.jsx          # Layout: sidebar + chat panel
+├── App.css
+├── index.css        # Theme / CSS variables
+├── main.jsx
+└── components/
+    ├── LeftPanel.jsx
+    ├── LeftPanel.css
+    ├── ChatPanel.jsx
+    └── ChatPanel.css
+
+docs/
+├── Sidebar.mdx      # Left sidebar (LeftPanel) docs
+└── ChatPanel.mdx    # Center chat panel docs
 ```
+
+### Component docs (MDX)
+
+| Doc | Component |
+| ----- | ----------- |
+| [docs/Sidebar.mdx](./docs/Sidebar.mdx) | `LeftPanel` — branding, collapse, New Chat, profile |
+| [docs/ChatPanel.mdx](./docs/ChatPanel.mdx) | Center chat — messages, input, session remount |
 
 ---
 
-Part of the Cortex project.
-
-> A personal second brain for software engineers.
+Part of the Cortex monorepo. See the root `README.md` and `package.json` for workspace-wide scripts and Husky setup.
