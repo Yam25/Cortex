@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from app.schemas.request import QueryRequest
-from app.schemas.response import RouterResponse
 from app.agents.router import classify_intent
 
 

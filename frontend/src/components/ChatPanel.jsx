@@ -1,34 +1,50 @@
 import './ChatPanel.css';
 import { useState } from 'react';
+import { sendMessage } from '../api/chat';
 
 function ChatPanel({ isSidebarOpen, onOpenSidebar }) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = {
-      sender: 'user',
-      text: input,
-    };
+    const query = input;
 
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: 'user',
+        text: query,
+      },
+    ]);
 
     setInput('');
     setIsThinking(true);
 
-    setTimeout(() => {
-      const botMessage = {
-        sender: 'bot',
-        text: 'Cortex is thinking and storing memory context.',
-      };
+    try {
+      const data = await sendMessage(query);
 
-      setMessages((prev) => [...prev, botMessage]);
-
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: data.intent,
+        },
+      ]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: 'Something went wrong.',
+        },
+      ]);
+      console.error(error);
+    } finally {
       setIsThinking(false);
-    }, 1000);
+    }
   };
 
   return (
