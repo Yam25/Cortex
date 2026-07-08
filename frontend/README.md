@@ -4,32 +4,33 @@ Frontend for **Cortex** — a personal second brain for software engineers.
 
 ---
 
-## Phase 1 (current)
+## Overview
 
-Phase 1 is a **UI shell** with local-only behavior. No backend or API yet.
+This workspace contains the React frontend for Cortex.
 
-### Repo and tooling
+It provides the main UI for chatting with notes, browsing stored context, and interacting with the Cortex experience.
 
-- React + Vite app in this workspace
-- **ESLint** and **Prettier** (`lint`, `format`, `format:check` scripts)
-- Root monorepo uses **npm workspaces**; **Husky** runs `npm run check` on commit (frontend lint/format + backend placeholder check)
+---
 
-Install from the **repo root** (`Cortex/`), not only this folder:
+## Repo and tooling
+
+This workspace uses:
+
+- React + Vite
+- JavaScript
+- ESLint
+- Prettier
+
+The root repository uses:
+
+- npm workspaces
+- Husky pre-commit hooks
+
+Install dependencies from the repo root:
 
 ```bash
 npm install
 ```
-
-### Layout
-
-
-| Area             | What’s there                                                                             |
-| ---------------- | ---------------------------------------------------------------------------------------- |
-| **Left sidebar** | Cortex branding, collapse control, **New Chat** button, profile footer (static)          |
-| **Center chat**  | Header (“New Chat”), welcome placeholder, message list with mock bot reply, input + send |
-
-
-Sidebar can be collapsed and reopened from the chat header.
 
 ---
 
@@ -44,13 +45,7 @@ Sidebar can be collapsed and reopened from the chat header.
 
 ## Run locally
 
-From repo root:
-
-```bash
-npm run dev
-```
-
-Or from this folder after root install:
+From the repo root:
 
 ```bash
 npm run dev
@@ -72,7 +67,7 @@ npm run preview
 
 ## Lint and format
 
-From repo root:
+From the repo root:
 
 ```bash
 npm run lint
@@ -81,23 +76,15 @@ npm run format:check
 npm run check
 ```
 
-From this folder (same scripts, local workspace):
-
-```bash
-npm run lint
-npm run format
-npm run format:check
-```
-
 ---
 
 ## Project structure
 
 ```text
 src/
-├── App.jsx          # Layout: sidebar + chat panel
+├── App.jsx
 ├── App.css
-├── index.css        # Theme / CSS variables
+├── index.css
 ├── main.jsx
 └── components/
     ├── LeftPanel.jsx
@@ -106,17 +93,17 @@ src/
     └── ChatPanel.css
 
 docs/
-├── Sidebar.mdx      # Left sidebar (LeftPanel) docs
-└── ChatPanel.mdx    # Center chat panel docs
+├── Sidebar.mdx
+└── ChatPanel.mdx
 ```
-
-### Component docs (MDX)
-
-| Doc | Component |
-| ----- | ----------- |
-| [docs/Sidebar.mdx](./docs/Sidebar.mdx) | `LeftPanel` — branding, collapse, New Chat, profile |
-| [docs/ChatPanel.mdx](./docs/ChatPanel.mdx) | Center chat — messages, input, session remount |
 
 ---
 
-Part of the Cortex monorepo. See the root `README.md` and `package.json` for workspace-wide scripts and Husky setup.
+## Component docs
+
+- [docs/Sidebar.mdx](./docs/Sidebar.mdx) — sidebar UI
+- [docs/ChatPanel.mdx](./docs/ChatPanel.mdx) — chat interface
+
+---
+
+Part of the Cortex monorepo. See the root `README.md` for workspace-wide tooling and project structure.
