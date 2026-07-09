@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.schemas.request import QueryRequest
-from app.agents.router import classify_intent
+from app.orchestrator.pipeline import run_pipeline
 
 
 router = APIRouter()
@@ -11,6 +11,6 @@ def health_check():
     return {"status": "ok"}
 
 
-@router.post("/chat")
+@router.post("/query")
 def query(request: QueryRequest):
-    return classify_intent(request.query)
+    return run_pipeline(request)

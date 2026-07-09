@@ -30,7 +30,7 @@ function ChatPanel({ isSidebarOpen, onOpenSidebar }) {
         ...prev,
         {
           sender: 'bot',
-          text: data.intent,
+          text: data.response,
         },
       ]);
     } catch (error) {
