@@ -15,5 +15,10 @@ export async function sendMessage(query) {
     throw new Error('Failed to send message');
   }
 
-  return response.json();
+  const data = await response.json();
+  if (!data || typeof data.response !== 'string') {
+    throw new Error('Invalid response from server');
+  }
+
+  return data;
 }

@@ -1,26 +1,34 @@
-from app.agents.router import classify_intent
 from app.agents.memory import store_memory
+from app.agents.router import classify_intent
+from app.agents.synthesis import generate_chat_response
 from app.schemas.request import QueryRequest
 from app.schemas.response import QueryResponse
+from app.utils.logging import get_logger
+
+logger = get_logger(__name__)
 
 
-def run_pipeline(request: QueryRequest)-> QueryResponse:
-    query = request.query
+def run_pipeline(request: QueryRequest) -> QueryResponse:
+    query = request.query.strip()
+    logger.info(
+        "Pipeline started",
+        extra={"event": "pipeline.start", "details": {"query_length": len(query)}},
+    )
+
     router_response = classify_intent(query)
+    intent = router_response.intent
 
-    match router_response.intent:
+    match intent:
         case "retrieve":
-            # TODO
-            pass
+            return QueryResponse(response="Memory retrieval is not implemented yet.")
 
         case "save":
-           response = store_memory(query)
-           return response
+            return store_memory(query)
 
         case "both":
-            # TODO
-            pass
+            return QueryResponse(
+                response="Saving and answering from memory is not implemented yet."
+            )
 
         case "chat":
-            # TODO
-            pass
+            return QueryResponse(response=generate_chat_response(query))
